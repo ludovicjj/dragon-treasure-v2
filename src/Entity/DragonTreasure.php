@@ -34,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         ]),
         new GetCollection(),
         new Post(),
-        new Put(),
         new Patch(),
         new Delete()
     ],
@@ -104,6 +103,7 @@ class DragonTreasure
     #[ORM\ManyToOne(inversedBy: 'dragonTreasures')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['treasure:read', 'treasure:write'])]
+    #[Assert\Valid]
     private ?User $owner = null;
 
     public function getId(): ?int
