@@ -53,6 +53,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 10
 )]
 #[ApiFilter(PropertyFilter::class)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'owner.username' => 'partial'
+])]
 class DragonTreasure
 {
     public function __construct()
@@ -104,6 +107,7 @@ class DragonTreasure
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['treasure:read', 'treasure:write'])]
     #[Assert\Valid]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?User $owner = null;
 
     public function getId(): ?int
