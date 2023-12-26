@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container">
-        <div {{ react_component('Hello', { 'fullName': 'john' }) }}>
+        <div {{ react_component('TreasureConnect', {
+            'fullName': 'john'
+        }) }} class="treasure-wrapper">
             Loading...
         </div>
     </div>

@@ -12,7 +12,7 @@ api_platform:
         html: ['text/html']
         json: ['application/json']
     defaults:
-        stateless: true
+        stateless: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
         extra_properties:
