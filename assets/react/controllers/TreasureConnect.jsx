@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import LoginForm from "./LoginForm";
 
-export default function TreasureConnect() {
-    const [state, setState] = useState({user: null})
+export default function TreasureConnect({user}) {
+    const [state, setState] = useState({user: user})
 
-    const onUserAuthenticated = function (uri) {
-        console.log(uri)
+    const onUserAuthenticated = async (uri) => {
+        const response = await fetch(uri);
+        const user = await response.json();
+        setState({user: user})
     }
 
     return <div className="card-wrapper">
@@ -16,6 +18,7 @@ export default function TreasureConnect() {
             {state.user ? (
                 <div>
                     Authenticated as <strong>{state.user.username}</strong>
+                    | <a href="/logout" className="underline">Log out</a>
                 </div>
             ) : (
                 <div className="text-center">

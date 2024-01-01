@@ -26,6 +26,7 @@ function LoginForm(props) {
             setState({error: ''})
             emailRef.current.value = ''
             passwordRef.current.value = ''
+            props.userAuthenticated(response.headers.get('location'))
         }
     }
 
