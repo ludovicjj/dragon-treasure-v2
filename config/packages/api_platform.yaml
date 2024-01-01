@@ -1,5 +1,5 @@
 api_platform:
-    title: Dragon Treasure
+    title: Treasure Connect
     version: 1.0.0
     formats:
         jsonld: ['application/ld+json']
@@ -12,7 +12,7 @@ api_platform:
         html: ['text/html']
         json: ['application/json']
     defaults:
-        stateless: true
+        stateless: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
         extra_properties:

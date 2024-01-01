@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div {{ react_component('TreasureConnect', {
+            'user': userData
+        }) }} class="treasure-wrapper">
+            Loading...
+        </div>
+    </div>
+
+{% endblock %}
