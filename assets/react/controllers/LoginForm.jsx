@@ -34,8 +34,8 @@ function LoginForm(props) {
         {state.error && (
             <div className="alert alert-danger">{state.error}</div>
         )}
-        <Field ref={emailRef} name={"email"} type={'text'} helpText={'yklocko@gmail.com'}>Email</Field>
-        <Field ref={passwordRef} name={"password"} type={'password'} helpText={'password'}>Mot de passe</Field>
+        <Field ref={emailRef} name={"email"} type={'text'} helpText={'bernie@dragonmail.com'}>Email</Field>
+        <Field ref={passwordRef} name={"password"} type={'password'} helpText={'roar'}>Mot de passe</Field>
         <button type="submit" className="btn btn-login">Connexion</button>
     </form>;
 }
