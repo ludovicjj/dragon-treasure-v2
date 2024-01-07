@@ -22,7 +22,7 @@ export default function TreasureConnect({user, tokens}) {
                     <h3 className="my-2">Tokens</h3>
                     {tokens ? (
                         <div>
-                            <ul className="list-group">
+                            <ul className="list-group list-unstyled">
                                 {tokens.map(token => <li key={token} className="list-group-item mb-1">{token}</li>)}
                             </ul>
                         </div>

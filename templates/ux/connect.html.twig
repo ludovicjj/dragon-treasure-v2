@@ -1,4 +1,10 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app_connect') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         {# Stymulus make automaticaly json_encode() that will transform that array into JSON #}
