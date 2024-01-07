@@ -1,0 +1,17 @@
+// Global style to btn
+.btn {
+    display: inline-block;
+    padding: .375rem .375rem;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #0d6efd;
+    background-color: #0d6efd;
+    border-radius: .375rem;
+    color: #FFFFFF;
+}
+.btn-primary {
+    font-weight: 500;
+    border: 1px solid #2e269a;
+    background-color: #2e269a;
+}
