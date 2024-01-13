@@ -21,6 +21,8 @@ security:
                 username_path: email
                 password_path: password
                 failure_handler: App\Security\AppAuthFailureHandler
+            access_token:
+                token_handler: App\Security\ApiTokenHandler
             logout:
                 path: app_logout
 

@@ -8,9 +8,12 @@
 
     .card-wrapper {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: .5rem;
 
+        & .card:nth-child(2) {
+            min-height: 300px;
+        }
         .card {
             flex: 1 1 0;
             background-color: #9e866d;
@@ -31,5 +34,11 @@
                 column-gap: .25rem;
             }
         }
+    }
+}
+
+@media (min-width: 1250px) {
+    .treasure-wrapper .card-wrapper {
+        flex-direction: row;
     }
 }

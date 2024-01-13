@@ -10,6 +10,7 @@ export default function TreasureConnect({user, tokens}) {
         setState({user: user})
     }
 
+    console.log(tokens, user, state.user)
     return <div className="card-wrapper">
         <div className="card">
             <LoginForm userAuthenticated={onUserAuthenticated}/>
@@ -36,7 +37,7 @@ export default function TreasureConnect({user, tokens}) {
                 </div>
             )}
             <hr className="my-5 mx-auto separator"/>
-            <p className="text-center">Check out the <a href="/api" className="underline">API Docs</a></p>
+            <p className="text-center">Check out the <a href="/api" className="underline" target="_blank">API Docs</a></p>
         </div>
     </div>
 }
