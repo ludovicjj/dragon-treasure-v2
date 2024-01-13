@@ -13,6 +13,7 @@ api_platform:
         json: ['application/json']
     swagger:
         api_keys:
+            # overridden in OpenApiFactoryDecorator
             access_token:
                 name: Authorization
                 type: header
