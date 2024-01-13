@@ -16,16 +16,19 @@ class ApiTokenHandler implements AccessTokenHandlerInterface
 
     public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
     {
-        $token = $this->apiTokenRepository->findOneBy(['token' => $accessToken]);
+        $apiToken = $this->apiTokenRepository->findOneBy(['token' => $accessToken]);
 
-        if (!$token) {
+        if (!$apiToken) {
             throw new BadCredentialsException();
         }
 
-        if (!$token->isValid()) {
+        if (!$apiToken->isValid()) {
             throw new CustomUserMessageAuthenticationException('token expired');
         }
 
-        return new UserBadge($token->getOwnedBy()->getUserIdentifier());
+        $user = $apiToken->getOwnedBy();
+        $user->defineAccessTokenScopes($apiToken->getScope());
+
+        return new UserBadge($user->getUserIdentifier());
     }
 }
