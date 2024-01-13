@@ -27,7 +27,7 @@ class ApiTokenHandler implements AccessTokenHandlerInterface
         }
 
         $user = $apiToken->getOwnedBy();
-        $user->defineAccessTokenScopes($apiToken->getScope());
+        $user->defineAccessTokenScopes($apiToken->getScopes());
 
         return new UserBadge($user->getUserIdentifier());
     }

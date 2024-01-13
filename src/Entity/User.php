@@ -76,7 +76,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class)]
     private Collection $apiTokens;
 
-    /* Scopes given during API authentication */
+    /**
+     * Scopes given during API authentication
+     * see : App/Security/ApiTokenHandler
+     */
     private ?array $accessTokenScopes = null;
 
     public function __construct()

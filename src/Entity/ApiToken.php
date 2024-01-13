@@ -35,7 +35,7 @@ class ApiToken
     private ?string $token;
 
     #[ORM\Column]
-    private array $scope = [];
+    private array $scopes = [];
 
     public function __construct(string $tokenType = self::PERSONAL_ACCESS_TOKEN_PREFIX)
     {
@@ -83,14 +83,14 @@ class ApiToken
         return $this;
     }
 
-    public function getScope(): array
+    public function getScopes(): array
     {
-        return $this->scope;
+        return $this->scopes;
     }
 
-    public function setScope(array $scope): static
+    public function setScopes(array $scopes): static
     {
-        $this->scope = $scope;
+        $this->scopes = $scopes;
 
         return $this;
     }
