@@ -1,8 +1,16 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app_connect') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
+        {# Stymulus make automaticaly json_encode() that will transform that array into JSON #}
         <div {{ react_component('TreasureConnect', {
-            'user': userData
+            'user': userData,
+            'tokens': app.user ? app.user.getValidTokenArray : null
         }) }} class="treasure-wrapper">
             Loading...
         </div>

@@ -11,6 +11,12 @@ api_platform:
         jsonopenapi: ['application/vnd.openapi+json']
         html: ['text/html']
         json: ['application/json']
+    swagger:
+        api_keys:
+            # overridden in OpenApiFactoryDecorator
+            access_token:
+                name: Authorization
+                type: header
     defaults:
         stateless: false
         cache_headers:

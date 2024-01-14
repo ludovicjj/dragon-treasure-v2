@@ -1,0 +1,44 @@
+@import "tools/alert";
+@import "tools/btn";
+@import "tools/spacing";
+@import "tools/form";
+
+.treasure-wrapper {
+    width: 100%;
+
+    .card-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        & .card:nth-child(2) {
+            min-height: 300px;
+        }
+        .card {
+            flex: 1 1 0;
+            background-color: #9e866d;
+            padding: 1.5rem;
+            border-radius: .5rem;
+
+            .underline {
+                color: inherit;
+            }
+
+            .separator {
+                border-color: rgba(33, 37, 41, 0.15);
+                margin: 2rem 40px;
+            }
+            .group-flex {
+                display: flex;
+                flex-direction: row;
+                column-gap: .25rem;
+            }
+        }
+    }
+}
+
+@media (min-width: 1250px) {
+    .treasure-wrapper .card-wrapper {
+        flex-direction: row;
+    }
+}
