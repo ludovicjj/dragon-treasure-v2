@@ -13,7 +13,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\DragonTreasureRepository;
 use Doctrine\DBAL\Types\Types;
@@ -34,9 +33,15 @@ use Symfony\Component\Validator\Constraints as Assert;
             'groups' => ['treasure:read', 'treasure:item:get']
         ]),
         new GetCollection(),
-        new Post(),
-        new Patch(),
-        new Delete()
+        new Post(
+            security: 'is_granted("ROLE_TREASURE_CREATE")'
+        ),
+        new Patch(
+            security: 'is_granted("ROLE_TREASURE_EDIT")'
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")'
+        )
     ],
     formats: [
         'jsonld',
