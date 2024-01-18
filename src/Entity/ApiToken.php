@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 class ApiToken
@@ -32,6 +33,7 @@ class ApiToken
     private ?\DateTimeImmutable $expiredAt = null;
 
     #[ORM\Column(length: 68)]
+    #[Groups(['token:read'])]
     private ?string $token;
 
     #[ORM\Column]
