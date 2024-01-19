@@ -20,5 +20,10 @@ class DragonTreasureResourceTest extends ApiTestCase
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
         $this->assertEquals(5, $response->toArray()['hydra:totalItems']);
+
+        $this->assertSame(
+            ['@id', '@type', 'name', 'description', 'value', 'coolFactor', 'owner', 'shortDescription', 'plunderedAtAgo'],
+            array_keys($response->toArray()['hydra:member'][0])
+        );
     }
 }
