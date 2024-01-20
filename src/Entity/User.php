@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: [
         'groups' => ['user:write']
     ],
-    security: 'is_granted("ROLE_USER")'
+    //security: 'is_granted("ROLE_USER")'
 )]
 #[ApiResource(
     uriTemplate: '/treasures/{treasure_id}/owner.{_format}',
@@ -91,6 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $dragonTreasures;
 
     #[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class)]
+    #[Groups(['token:read'])]
     private Collection $apiTokens;
 
     /**

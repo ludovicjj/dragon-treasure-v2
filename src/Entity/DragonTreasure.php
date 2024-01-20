@@ -13,8 +13,10 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\DragonTreasureRepository;
+use App\State\TreasureOwnerProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
@@ -34,13 +36,17 @@ use Symfony\Component\Validator\Constraints as Assert;
         ]),
         new GetCollection(),
         new Post(
-            security: 'is_granted("ROLE_TREASURE_CREATE")'
+            security: 'is_granted("ROLE_TREASURE_CREATE")',
+            processor: TreasureOwnerProcessor::class
         ),
         new Patch(
             security: 'is_granted("ROLE_TREASURE_EDIT")'
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN")'
+        ),
+        new Put(
+            security: 'is_granted("ROLE_TREASURE_EDIT")'
         )
     ],
     formats: [
@@ -56,7 +62,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: [
         'groups' => ['treasure:write']
     ],
-    paginationItemsPerPage: 10
+    paginationItemsPerPage: 10,
+    extraProperties: [
+        'standard_put' => false
+    ]
 )]
 #[ApiResource(
     uriTemplate: '/users/{user_id}/treasures.{_format}',

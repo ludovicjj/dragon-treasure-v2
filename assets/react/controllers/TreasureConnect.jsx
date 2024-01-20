@@ -1,16 +1,22 @@
 import React, {useState} from 'react';
 import LoginForm from "./LoginForm";
+import {useAppStore} from "../../js/store";
 
 export default function TreasureConnect({user, tokens}) {
-    const [state, setState] = useState({user: user})
+    console.log(tokens);
+    const [state, setState] = useState({user: user, tokens: tokens})
 
     const onUserAuthenticated = async (uri) => {
         const response = await fetch(uri);
-        const user = await response.json();
-        setState({user: user})
+        const {username, email, apiTokens} = await response.json();
+
+        setState(prevState => ({
+            ...prevState,
+            user: {username, email},
+            tokens: apiTokens.map(item => item.token)
+        }));
     }
 
-    console.log(tokens, user, state.user)
     return <div className="card-wrapper">
         <div className="card">
             <LoginForm userAuthenticated={onUserAuthenticated}/>
@@ -21,10 +27,12 @@ export default function TreasureConnect({user, tokens}) {
                     Authenticated as <strong>{state.user.username}</strong>
                     | <a href="/logout" className="underline">Log out</a>
                     <h3 className="my-2">Tokens</h3>
-                    {tokens ? (
+                    {state.tokens ? (
                         <div>
                             <ul className="list-group list-unstyled">
-                                {tokens.map(token => <li key={token} className="list-group-item mb-1">{token}</li>)}
+                                {state.tokens.map(token => (
+                                    <li key={token} className="list-group-item mb-1">{token}</li>
+                                ))}
                             </ul>
                         </div>
                     ) : (

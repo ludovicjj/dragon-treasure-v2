@@ -45,3 +45,33 @@ api_platform:
     enable_swagger: false
     enable_swagger_ui: false
 ```
+
+## Test
+
+Run all tests
+```yaml
+symfony php bin/phpunit
+```
+
+Run only one test
+```yaml
+symfony php bin/phpunit --filter=<methodeTestName>
+```
+
+## Embedded Relation
+
+Création d'un trésor, lié à un utilisateur existant dans la base de données, et modification du nom d'utilisateur de l'utilisateur.. (method : POST)
+
+**Use "id" not "@id"**
+```json
+{
+    "name": "A shiny thing",
+    "value": 1000,
+    "coolFactor": 5,
+    "owner": {
+        "id": "/api/users/16",
+        "username": "Batman"
+    },
+    "description": "It sparkles when I wave it in the air."
+}
+```
