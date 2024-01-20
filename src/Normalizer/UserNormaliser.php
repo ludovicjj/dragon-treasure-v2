@@ -6,7 +6,6 @@ use App\Entity\User;
 use ArrayObject;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -22,7 +21,11 @@ class UserNormaliser implements NormalizerInterface, SerializerAwareInterface
 
     public function normalize(mixed $object, string $format = null, array $context = []): array|ArrayObject|bool|float|int|null|string
     {
-        if ($object instanceof User && $this->security->getUser() === $object) {
+        if (
+            $object instanceof User &&
+            $context['operation']->getMethod() === 'GET' &&
+            $this->security->getUser() === $object
+        ) {
             $context['groups'][] = 'token:read';
         }
 
