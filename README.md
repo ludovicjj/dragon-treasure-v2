@@ -99,3 +99,20 @@ api_platform:
     extra_properties:
         standard_put: true
 ```
+
+Ou alors définir le nouveau comportement de ```PUT``` pour certaine ApiResource :
+```php
+#[ORM\Entity(repositoryClass: FooRepository::class)]
+#[ApiResource(
+    shortName: "Foo",
+    description: 'A random description',
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Put()
+    ],
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
+```
