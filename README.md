@@ -17,6 +17,16 @@ Montre toute la configuration possible
 php bin/console config:dump api_platform
 ```
 
+## stateless
+
+Si la session est utilisé pour s'authentifier, modification du stateless dans la config de API Platform
+```yaml
+api_platform:
+    defaults:
+        stateless: false // default true
+```
+
+
 ## Documentation
 
 Désactiver la documentation  ```config/packages/api_platform.yaml```
@@ -74,4 +84,18 @@ Création d'un trésor, lié à un utilisateur existant dans la base de données
     },
     "description": "It sparkles when I wave it in the air."
 }
+```
+
+## Put Operation
+
+Dans API Platform 4, l'opartion ```PUT``` se comportera comme une modification totale et non partiel (selon la spécification HTTP). Avec l'utilisation de ```PUT```, vous devez envoyer tous les champs, même ceux qui ne changent pas. Sinon, ils seront définis sur ```null```.
+
+Pour résoudre ce problème globalement pour toutes vos ressources à la fois, vous pouvez ajouter ceci par défaut dans la configuration de l'API Platform :
+
+```yaml
+# config/packages/api_platform.yaml
+api_platform:
+    defaults:
+    extra_properties:
+        standard_put: true
 ```
