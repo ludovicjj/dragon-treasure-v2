@@ -3,6 +3,8 @@
 namespace App\Tests\Functional;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\ApiToken;
+use App\Factory\ApiTokenFactory;
 use App\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Test\Factories;
@@ -67,11 +69,45 @@ class DragonTreasureResourceTest extends ApiTestCase
         }
     }
 
+    public function testPostCreateTreasureWithApiKey(): void
+    {
+        $token = ApiTokenFactory::createOne([
+           'scopes' => [ApiToken::SCOPE_TREASURE_CREATE]
+        ]);
+
+        static::createClient()
+            ->request('POST', '/api/treasures', [
+                'headers' => [
+                    'Authorization' => 'Bearer '. $token->getToken()
+                ],
+                'json' => [],
+            ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPostCreateTreasureDeniedWithoutScope(): void
+    {
+        $token = ApiTokenFactory::createOne([
+            'scopes' => [ApiToken::SCOPE_TREASURE_EDIT]
+        ]);
+
+        static::createClient()
+            ->request('POST', '/api/treasures', [
+                'headers' => [
+                    'Authorization' => 'Bearer '. $token->getToken()
+                ],
+                'json' => [],
+            ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
     public function provideTreasureJson(): iterable
     {
         yield [
             [],
-            422,
+            Response::HTTP_UNPROCESSABLE_ENTITY,
             [
                 [
                     'propertyPath' => 'description',
@@ -90,7 +126,7 @@ class DragonTreasureResourceTest extends ApiTestCase
                 'coolFactor' => 5,
                 'owner' => '/api/users/1',
             ],
-            422,
+            Response::HTTP_UNPROCESSABLE_ENTITY,
             [
                 [
                     'propertyPath' => 'name',
@@ -106,7 +142,7 @@ class DragonTreasureResourceTest extends ApiTestCase
                 'coolFactor' => 5,
                 'owner' => '/api/users/1',
             ],
-            422,
+            Response::HTTP_UNPROCESSABLE_ENTITY,
             [
                 [
                     'propertyPath' => 'name',
@@ -126,7 +162,7 @@ class DragonTreasureResourceTest extends ApiTestCase
                 'coolFactor' => 5,
                 'owner' => '/api/users/1',
             ],
-            422,
+            Response::HTTP_UNPROCESSABLE_ENTITY,
             [
                 [
                     'propertyPath' => 'description',
@@ -141,7 +177,7 @@ class DragonTreasureResourceTest extends ApiTestCase
                 'value' => 1000,
                 'coolFactor' => 5,
             ],
-            201
+            Response::HTTP_CREATED
         ];
         yield [
             [
@@ -151,7 +187,7 @@ class DragonTreasureResourceTest extends ApiTestCase
                 'coolFactor' => 5,
                 'owner' => '/api/users/1',
             ],
-            201
+            Response::HTTP_CREATED
         ];
     }
 }

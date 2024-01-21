@@ -62,10 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: [
         'groups' => ['treasure:write']
     ],
-    paginationItemsPerPage: 10,
-    extraProperties: [
-        'standard_put' => false
-    ]
+    paginationItemsPerPage: 10
 )]
 #[ApiResource(
     uriTemplate: '/users/{user_id}/treasures.{_format}',
