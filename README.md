@@ -116,3 +116,35 @@ Ou alors définir le nouveau comportement de ```PUT``` pour certaine ApiResource
     ],
 )]
 ```
+
+## Custom Normalizer
+Une solution de contournement possible, qui fonctionnerait avec le nouveau TraceableNormalizer, consiste à utiliser le nouvel Autowire attribut :
+
+```php
+class UserNormalizer implements NormalizerInterface
+{
+    public function __construct(
+        #[Autowire(service: 'api_platform.jsonld.normalizer.item')]
+        private readonly NormalizerInterface $normalizer,
+    ) {
+    }
+}
+```
+OU bien :
+
+```php
+class UserNormalizer implements NormalizerInterface
+{
+    public function __construct(
+        private readonly NormalizerInterface $normalizer,
+    ) {
+    }
+}
+```
+```yaml
+services:
+    App\Serializer\UserNormalizer:
+        arguments:
+            $normalizer: '@api_platform.jsonld.normalizer.item'
+```
+use ```'@serializer.normalizer.object'``` symfony classic
