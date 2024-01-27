@@ -40,13 +40,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: TreasureOwnerProcessor::class
         ),
         new Patch(
-            security: 'is_granted("ROLE_TREASURE_EDIT")'
+            security: 'is_granted("ROLE_TREASURE_EDIT") and object.getOwner() == user',
+            securityPostDenormalize: 'object.getOwner() == user',
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN")'
-        ),
-        new Put(
-            security: 'is_granted("ROLE_TREASURE_EDIT")'
         )
     ],
     formats: [
