@@ -148,3 +148,15 @@ services:
             $normalizer: '@api_platform.jsonld.normalizer.item'
 ```
 use ```'@serializer.normalizer.object'``` symfony classic
+
+## Conditional property : ApiProperty
+
+Si cette expression renvoie false, la propriété ```isPublished``` ne sera pas incluse dans l'API : elle ne sera ni lisible ni inscriptible.
+```php
+class DragonTreasure
+{
+    #[ApiProperty(security: 'is_granted("ROLE_ADMIN")')]
+    #[Groups(['treasure:read', 'treasure:write'])]
+    private bool $isPublished = false;
+}
+```

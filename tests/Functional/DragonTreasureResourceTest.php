@@ -139,7 +139,9 @@ class DragonTreasureResourceTest extends ApiTestCase
     public function testAdminCanPatchTreasure(): void
     {
         $admin = UserFactory::new()->asAdmin()->create();
-        $treasure = DragonTreasureFactory::createOne();
+        $treasure = DragonTreasureFactory::createOne([
+            'isPublished' => false
+        ]);
 
         $response = static::createClient()
             ->loginUser($admin->object())
@@ -151,6 +153,27 @@ class DragonTreasureResourceTest extends ApiTestCase
 
         $this->assertResponseStatusCodeSame(200);
         $this->assertSame(12345, $response->toArray()['value']);
+        $this->assertSame(false, $response->toArray()['isPublished']);
+    }
+
+    public function testOwnerCanSeeIsPublishedField(): void
+    {
+        $user = UserFactory::new()->create();
+        $treasure = DragonTreasureFactory::createOne([
+            'isPublished' => false,
+            'owner' => $user
+        ]);
+
+        $response = static::createClient()
+            ->loginUser($user->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'value' => 12345,
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame(false, $response->toArray()['isPublished']);
     }
 
     public function provideTreasureJson(): iterable
