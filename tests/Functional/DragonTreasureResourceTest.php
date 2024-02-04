@@ -39,11 +39,10 @@ class DragonTreasureResourceTest extends ApiTestCase
      */
     public function testPostCreateTreasure(array $json, int $statusCode, array $expectedViolations = []): void
     {
-        $proxy = UserFactory::createOne();
-        $user = $proxy->object();
+        $user = UserFactory::createOne();
 
         $response = static::createClient()
-            ->loginUser($user)
+            ->loginUser($user->object())
             ->request('POST', '/api/treasures', [
                 'json' => $json,
             ]);
@@ -101,6 +100,80 @@ class DragonTreasureResourceTest extends ApiTestCase
             ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testPatchTreasureOwner(): void
+    {
+        $user1 = UserFactory::createOne();
+        $user2 = UserFactory::createOne();
+        $treasure = DragonTreasureFactory::createOne(['owner' => $user1]);
+
+        static::createClient()
+            ->loginUser($user2->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'value' => 12345
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testPatchTreasureChangeOwner(): void
+    {
+        $user1 = UserFactory::createOne();
+        $user2 = UserFactory::createOne();
+        $treasure = DragonTreasureFactory::createOne(['owner' => $user1]);
+
+        static::createClient()
+            ->loginUser($user1->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'owner' => '/api/users/'.$user2->getId()
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testAdminCanPatchTreasure(): void
+    {
+        $admin = UserFactory::new()->asAdmin()->create();
+        $treasure = DragonTreasureFactory::createOne([
+            'isPublished' => false
+        ]);
+
+        $response = static::createClient()
+            ->loginUser($admin->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'value' => 12345,
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame(12345, $response->toArray()['value']);
+        $this->assertSame(false, $response->toArray()['isPublished']);
+    }
+
+    public function testOwnerCanSeeIsPublishedField(): void
+    {
+        $user = UserFactory::new()->create();
+        $treasure = DragonTreasureFactory::createOne([
+            'isPublished' => false,
+            'owner' => $user
+        ]);
+
+        $response = static::createClient()
+            ->loginUser($user->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'value' => 12345,
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame(false, $response->toArray()['isPublished']);
     }
 
     public function provideTreasureJson(): iterable
