@@ -39,11 +39,10 @@ class DragonTreasureResourceTest extends ApiTestCase
      */
     public function testPostCreateTreasure(array $json, int $statusCode, array $expectedViolations = []): void
     {
-        $proxy = UserFactory::createOne();
-        $user = $proxy->object();
+        $user = UserFactory::createOne();
 
         $response = static::createClient()
-            ->loginUser($user)
+            ->loginUser($user->object())
             ->request('POST', '/api/treasures', [
                 'json' => $json,
             ]);
@@ -135,6 +134,23 @@ class DragonTreasureResourceTest extends ApiTestCase
             ]);
 
         $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testAdminCanPatchTreasure(): void
+    {
+        $admin = UserFactory::new()->asAdmin()->create();
+        $treasure = DragonTreasureFactory::createOne();
+
+        $response = static::createClient()
+            ->loginUser($admin->object())
+            ->request('PATCH', '/api/treasures/'.$treasure->getId(), [
+                'json' => [
+                    'value' => 12345,
+                ],
+            ]);
+
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame(12345, $response->toArray()['value']);
     }
 
     public function provideTreasureJson(): iterable
